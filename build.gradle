@@ -1,0 +1,53 @@
+buildscript {
+    ext.kotlinVersion = '1.2.21'
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha05'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
+    }
+}
+
+ext {
+
+    supportLibraryVersion = '27.1.0'
+    firebaseVersion = '11.8.0'
+
+    supportDependencies = [
+            appCompat        : "com.android.support:appcompat-v7:$supportLibraryVersion",
+            design           : "com.android.support:design:$supportLibraryVersion",
+            cardView         : "com.android.support:cardview-v7:$supportLibraryVersion",
+            recyclerView     : "com.android.support:recyclerview-v7:$supportLibraryVersion",
+            supportAnnotation: "com.android.support:support-annotations:$supportLibraryVersion",
+            palette          : "com.android.support:palette-v7:$supportLibraryVersion",
+            percent          : "com.android.support:percent:$supportLibraryVersion",
+            constraintLayout : "com.android.support.constraint:constraint-layout:1.1.0-beta5"
+
+    ]
+
+    firebaseDependencies = [
+            core     : "com.google.firebase:firebase-core:$firebaseVersion",
+            crash    : "com.google.firebase:firebase-crash:$firebaseVersion",
+            ads      : "com.google.firebase:firebase-ads:$firebaseVersion",
+            messaging: "com.google.firebase:firebase-messaging:$firebaseVersion",
+            invites  : "com.google.firebase:firebase-invites:$firebaseVersion",
+            config   : "com.google.firebase:firebase-config:$firebaseVersion",
+            database : "com.google.firebase:firebase-database:$firebaseVersion"
+    ]
+
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

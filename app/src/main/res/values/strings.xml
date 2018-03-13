@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">HostelWorldChallenge</string>
+    <string name="message_problem">Sorry, there is a problem loading data. Please, try again later.</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="description_featured">Property featured</string>
+    <string name="description_property">Property image</string>
+</resources>

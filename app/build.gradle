@@ -1,0 +1,117 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-crash'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+
+def versionBuild = 1
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def releaseNotes = ["git", "log", "--oneline", "--pretty=format:\"%an %ad: %s\"", "--date=short"].execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("dd-MM-yyyy'T'HH", TimeZone.getTimeZone("UTC"))
+
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        applicationId 'com.hostelworld.challenge'
+
+        minSdkVersion 14
+        targetSdkVersion 27
+
+        versionCode versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = outputFileName.replace(".apk", "-${defaultConfig.versionName}.apk")
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** KOTLIN **/
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+
+    /** ANDROID SUPPORT **/
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.design
+    implementation supportDependencies.cardView
+    implementation supportDependencies.supportAnnotation
+    implementation supportDependencies.constraintLayout
+
+    /** FIREBASE **/
+    implementation firebaseDependencies.core
+    implementation firebaseDependencies.crash
+    implementation firebaseDependencies.config
+
+    /** RETROFIT and OKHTTP **/
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    /** GLIDE **/
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
+
+    /** DAGGER **/
+    implementation 'com.google.dagger:dagger:2.14.1'
+    implementation 'com.android.support:support-v13:27.1.0'
+    kapt 'com.google.dagger:dagger-compiler:2.14.1'
+    compileOnly 'org.glassfish:javax.annotation:3.1.1'
+
+    /** RX **/
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    /** GSON **/
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    /** JUNIT **/
+    testImplementation 'junit:junit:4.12'
+    
+    /** SUPPORT TEST **/
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.1') {
+        exclude module: 'support-annotations'
+    }
+    androidTestImplementation ('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
+    /** MOCKITO **/
+    testImplementation 'org.mockito:mockito-core:2.10.0'
+}
